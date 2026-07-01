@@ -488,12 +488,14 @@ with tabs[0]:
                 if cache and "rationale" in cache:
                     rat = cache["rationale"]
                     dim_labels = {"impact":"Impact","faisabilite":"Faisabilité","delai_valeur":"Délai","alignement":"Alignement","risque":"Risque"}
+                    primary_color = COLORS["primary"]
+                    muted_color = COLORS["text_muted"]
                     html_rationale = "".join(
-                        f"<div style='margin:3px 0;font-size:.82rem'><span style='color:{COLORS[\"primary\"]};font-weight:600'>{dim_labels[k]}</span> — {v}</div>"
+                        f"<div style='margin:3px 0;font-size:.82rem'><span style='color:{primary_color};font-weight:600'>{dim_labels[k]}</span> — {v}</div>"
                         for k,v in rat.items() if k in dim_labels
                     )
                     st.markdown(f"""<div class='ai-score-box'>
-                      <div style='font-size:.78rem;color:{COLORS["text_muted"]};margin-bottom:8px'>🤖 Scores auto-générés par Claude Haiku</div>
+                      <div style='font-size:.78rem;color:{muted_color};margin-bottom:8px'>🤖 Scores auto-générés par Claude Haiku</div>
                       {html_rationale}
                     </div>""", unsafe_allow_html=True)
 
