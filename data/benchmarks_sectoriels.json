@@ -1,0 +1,70 @@
+{
+  "secteurs": {
+    "Luxe & Mode": {
+      "description": "LVMH, Kering, Hermès, Dior, Chanel, Saint Laurent",
+      "cas_types": {
+        "Personnalisation & Recommandation": {"impact": 8.5, "faisabilite": 7.0, "delai_valeur": 7.5, "alignement": 8.0, "risque": 8.5, "source": "McKinsey AI in Luxury 2024"},
+        "Visual AI (Try-On, Style Transfer)": {"impact": 9.0, "faisabilite": 4.5, "delai_valeur": 3.0, "alignement": 9.0, "risque": 7.0, "source": "BCG Luxury Tech Report 2024"},
+        "Prédiction Tendances (NLP/CV)": {"impact": 8.5, "faisabilite": 5.0, "delai_valeur": 4.0, "alignement": 9.0, "risque": 7.5, "source": "Vogue Business AI Report 2024"},
+        "Chatbot SAV": {"impact": 7.5, "faisabilite": 7.5, "delai_valeur": 8.0, "alignement": 7.0, "risque": 8.5, "source": "Gartner AI Adoption 2024"},
+        "Détection Contrefaçon": {"impact": 9.0, "faisabilite": 6.0, "delai_valeur": 5.5, "alignement": 9.5, "risque": 9.0, "source": "LVMH Innovation Report 2024"},
+        "Optimisation Supply Chain": {"impact": 8.0, "faisabilite": 5.5, "delai_valeur": 4.5, "alignement": 7.5, "risque": 8.0, "source": "McKinsey Operations 2024"}
+      }
+    },
+    "Beauté & Cosmétique": {
+      "description": "L'Oréal, Sephora, NARS, Guerlain, Clarins, Shiseido",
+      "cas_types": {
+        "Virtual Try-On Beauté": {"impact": 8.5, "faisabilite": 6.0, "delai_valeur": 5.0, "alignement": 9.0, "risque": 8.0, "source": "L'Oréal Tech Innovation 2024"},
+        "Formulation IA (R&D)": {"impact": 9.0, "faisabilite": 4.0, "delai_valeur": 2.5, "alignement": 9.5, "risque": 7.0, "source": "Cosmetics & Toiletries AI 2024"},
+        "Personnalisation Soin Peau": {"impact": 8.5, "faisabilite": 6.5, "delai_valeur": 6.0, "alignement": 9.0, "risque": 7.5, "source": "BCG Beauty Tech 2024"},
+        "Analyse Sentiment Réseaux": {"impact": 7.0, "faisabilite": 8.5, "delai_valeur": 8.5, "alignement": 7.0, "risque": 8.5, "source": "Sprinklr Beauty Benchmark 2024"},
+        "Génération Contenu (Images/Texte)": {"impact": 7.5, "faisabilite": 8.0, "delai_valeur": 8.5, "alignement": 7.5, "risque": 6.5, "source": "Gartner Generative AI 2024"},
+        "Prévision Demande SKU": {"impact": 7.5, "faisabilite": 6.0, "delai_valeur": 5.0, "alignement": 7.0, "risque": 8.5, "source": "McKinsey Supply Chain 2024"}
+      }
+    },
+    "Retail & E-commerce": {
+      "description": "Amazon, Zalando, FNAC, Décathlon, Carrefour",
+      "cas_types": {
+        "Moteur de Recommandation": {"impact": 9.0, "faisabilite": 8.0, "delai_valeur": 7.5, "alignement": 9.0, "risque": 9.0, "source": "McKinsey Retail AI 2024"},
+        "Pricing Dynamique": {"impact": 8.5, "faisabilite": 7.0, "delai_valeur": 7.0, "alignement": 8.5, "risque": 7.5, "source": "BCG Pricing Intelligence 2024"},
+        "Détection Fraude": {"impact": 8.0, "faisabilite": 7.5, "delai_valeur": 7.0, "alignement": 8.0, "risque": 9.5, "source": "Stripe Fraud Report 2024"},
+        "Search Sémantique": {"impact": 8.0, "faisabilite": 7.5, "delai_valeur": 7.5, "alignement": 8.5, "risque": 9.0, "source": "Algolia Search Trends 2024"},
+        "Prévision Inventaire": {"impact": 8.5, "faisabilite": 6.5, "delai_valeur": 5.5, "alignement": 8.0, "risque": 8.5, "source": "Gartner Supply Chain 2024"},
+        "Chatbot Commerce": {"impact": 7.5, "faisabilite": 8.5, "delai_valeur": 8.5, "alignement": 8.0, "risque": 8.5, "source": "Intercom AI Report 2024"}
+      }
+    },
+    "Finance & Banque": {
+      "description": "BNP, Société Générale, AXA, Crédit Agricole, fintech",
+      "cas_types": {
+        "Détection Fraude Temps Réel": {"impact": 9.5, "faisabilite": 7.5, "delai_valeur": 6.5, "alignement": 9.5, "risque": 8.0, "source": "McKinsey FinTech 2024"},
+        "Credit Scoring ML": {"impact": 8.5, "faisabilite": 7.0, "delai_valeur": 6.0, "alignement": 8.5, "risque": 6.5, "source": "BCG Finance AI 2024"},
+        "Chatbot Conseiller": {"impact": 7.5, "faisabilite": 7.5, "delai_valeur": 7.5, "alignement": 7.5, "risque": 6.5, "source": "Gartner Banking AI 2024"},
+        "Analyse Risque Portefeuille": {"impact": 9.0, "faisabilite": 6.5, "delai_valeur": 5.5, "alignement": 9.0, "risque": 6.0, "source": "Bloomberg AI Finance 2024"},
+        "Conformité & KYC Automatisé": {"impact": 8.0, "faisabilite": 6.5, "delai_valeur": 5.5, "alignement": 9.0, "risque": 7.5, "source": "Accenture RegTech 2024"},
+        "Personnalisation Produit Bancaire": {"impact": 7.5, "faisabilite": 7.0, "delai_valeur": 6.5, "alignement": 8.0, "risque": 7.0, "source": "McKinsey Retail Banking 2024"}
+      }
+    },
+    "Santé & Pharma": {
+      "description": "Sanofi, Pierre Fabre, CHU, cliniques privées, medtech",
+      "cas_types": {
+        "Aide au Diagnostic (ImageML)": {"impact": 9.5, "faisabilite": 5.5, "delai_valeur": 3.5, "alignement": 9.5, "risque": 5.5, "source": "WHO AI Health Report 2024"},
+        "Prédiction Réadmission": {"impact": 8.5, "faisabilite": 6.5, "delai_valeur": 5.5, "alignement": 9.0, "risque": 6.5, "source": "NEJM AI Healthcare 2024"},
+        "Drug Discovery IA": {"impact": 9.5, "faisabilite": 3.5, "delai_valeur": 2.0, "alignement": 9.5, "risque": 6.0, "source": "Nature Drug Discovery AI 2024"},
+        "Chatbot Symptômes": {"impact": 7.5, "faisabilite": 7.5, "delai_valeur": 7.0, "alignement": 7.5, "risque": 5.5, "source": "Deloitte Digital Health 2024"},
+        "Optimisation Planning RH": {"impact": 7.0, "faisabilite": 7.5, "delai_valeur": 7.5, "alignement": 7.5, "risque": 8.5, "source": "McKinsey Healthcare Ops 2024"},
+        "Analyse Essais Cliniques": {"impact": 9.0, "faisabilite": 5.0, "delai_valeur": 3.0, "alignement": 9.0, "risque": 6.5, "source": "Pfizer AI Clinical 2024"}
+      }
+    },
+    "Industrie & Manufacturing": {
+      "description": "Airbus, Renault, Saint-Gobain, Schneider, Michelin",
+      "cas_types": {
+        "Maintenance Prédictive": {"impact": 9.0, "faisabilite": 7.0, "delai_valeur": 6.5, "alignement": 9.0, "risque": 8.5, "source": "McKinsey Industry 4.0 2024"},
+        "Contrôle Qualité Vision": {"impact": 8.5, "faisabilite": 7.5, "delai_valeur": 6.5, "alignement": 8.5, "risque": 8.5, "source": "Deloitte Manufacturing AI 2024"},
+        "Optimisation Production": {"impact": 8.5, "faisabilite": 6.0, "delai_valeur": 5.5, "alignement": 8.5, "risque": 8.5, "source": "BCG Industry AI 2024"},
+        "Digital Twin": {"impact": 9.0, "faisabilite": 4.5, "delai_valeur": 3.5, "alignement": 9.0, "risque": 8.0, "source": "Siemens Innovation 2024"},
+        "Prévision Demande": {"impact": 8.0, "faisabilite": 7.0, "delai_valeur": 6.5, "alignement": 8.0, "risque": 8.5, "source": "Gartner Supply Chain 2024"},
+        "Assistant Opérateur": {"impact": 7.5, "faisabilite": 7.5, "delai_valeur": 7.0, "alignement": 7.5, "risque": 8.0, "source": "Accenture Workers AI 2024"}
+      }
+    }
+  }
+}
