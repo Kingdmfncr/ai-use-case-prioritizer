@@ -593,7 +593,7 @@ with tabs[1]:
 
     fig_bubble.update_layout(
         **CHART_DEFAULTS,
-        title=f"{'Portefeuille vs Benchmark ' + secteur if show_bench else 'Positionnement des cas d'usage'} — taille = score composite",
+        title=("Portefeuille vs Benchmark " + secteur if show_bench else "Positionnement des cas d'usage") + " — taille = score composite",
         height=520,
         xaxis=dict(**CHART_DEFAULTS["xaxis"], title="Faisabilité Technique", range=[0,10.5]),
         yaxis=dict(**CHART_DEFAULTS["yaxis"], title="Impact Business",       range=[0,10.5]),
@@ -812,14 +812,24 @@ with tabs[4]:
     else:
         st.markdown(f"<div class='alert-box alert-info'>ℹ Entrez votre clé API en sidebar pour générer la narrative.</div>", unsafe_allow_html=True)
         top1 = df.iloc[0]
-        top2 = df.iloc[1] if len(df)>1 else None
-        fallback = f"""L'analyse de votre portefeuille de {len(df)} cas d'usage IA révèle {n_qw} Quick Win{'s' if n_qw>1 else ''} et {n_sb} Strategic Bet{'s' if n_sb>1 else ''}.
-
-La priorité absolue est <strong style='color:{COLORS["primary"]}'>{top1["nom"]}</strong> (score {top1["score"]}/10).
-{f'En parallèle, <strong>{top2["nom"]}</strong> (score {top2["score"]}/10) mérite d\'être planifié.' if top2 is not None else ""}
-
-Le score moyen du portefeuille ({avg_score:.1f}/10) indique un pipeline équilibré.
-Connectez votre clé API pour une analyse approfondie et personnalisée."""
+        top2 = df.iloc[1] if len(df) > 1 else None
+        qw_s  = "s" if n_qw > 1 else ""
+        sb_s  = "s" if n_sb > 1 else ""
+        top2_line = (
+            f"En parallèle, <strong>{top2['nom']}</strong> (score {top2['score']}/10) mérite d'être planifié."
+            if top2 is not None else ""
+        )
+        primary_color = COLORS["primary"]
+        muted_color   = COLORS["text_muted"]
+        bg_surface    = COLORS["bg_surface"]
+        fallback = (
+            f"L'analyse de votre portefeuille de {len(df)} cas d'usage IA révèle "
+            f"{n_qw} Quick Win{qw_s} et {n_sb} Strategic Bet{sb_s}.<br><br>"
+            f"La priorité absolue est <strong style='color:{primary_color}'>{top1['nom']}</strong> "
+            f"(score {top1['score']}/10). {top2_line}<br><br>"
+            f"Le score moyen du portefeuille ({avg_score:.1f}/10) indique un pipeline équilibré. "
+            f"Connectez votre clé API pour une analyse approfondie et personnalisée."
+        )
         st.markdown(f"""<div style='background:{COLORS["bg_surface"]};border-left:4px solid {COLORS["text_muted"]};
           border-radius:8px;padding:20px;margin:12px 0;line-height:1.7;font-size:.95rem;color:{COLORS["text_muted"]}'>
           {fallback}</div>""", unsafe_allow_html=True)
