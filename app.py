@@ -216,6 +216,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après :
         msg = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=600,
+            temperature=0,  # grille figée : on veut la réponse la plus probable, pas une variante créative
             messages=[{"role": "user", "content": prompt}],
         )
         raw = msg.content[0].text.strip()
@@ -223,10 +224,34 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après :
         if "```" in raw:
             raw = raw.split("```")[1]
             if raw.startswith("json"): raw = raw[4:]
-        return json.loads(raw)
+        result = json.loads(raw)
+
+        # validation de schéma : 5 dimensions, entiers 1-10 — sinon le score composite
+        # (compute_score) calculerait silencieusement avec une valeur manquante ou hors borne
+        expected_dims = {"impact", "faisabilite", "delai_valeur", "alignement", "risque"}
+        scores = result.get("scores", {})
+        if set(scores.keys()) != expected_dims or not all(
+            isinstance(scores.get(d), int) and 1 <= scores[d] <= 10 for d in expected_dims
+        ):
+            st.error(f"Auto-scoring rejeté : réponse hors grille attendue ({scores}).")
+            return None
+        return result
     except Exception as e:
         st.error(f"Erreur auto-scoring : {e}")
         return None
+
+def check_scoring_consistency(nom: str, description: str, categorie: str, api_key: str, n_runs: int = 2) -> dict:
+    """Relance l'auto-scoring n_runs fois sur la même entrée et vérifie que le score
+    obtenu est identique à chaque exécution (temperature=0 doit le garantir en pratique,
+    mais on le vérifie plutôt que de le supposer)."""
+    runs = []
+    for _ in range(n_runs):
+        result = autoscore_with_claude(nom, description, categorie, api_key)
+        if result is None:
+            return {"consistent": False, "runs": runs, "error": "Un des appels a échoué."}
+        runs.append(result["scores"])
+    consistent = all(r == runs[0] for r in runs[1:])
+    return {"consistent": consistent, "runs": runs, "error": None}
 
 # ─── Option B : Benchmark lookup ───────────────────────────────────────────────
 def find_best_benchmark(secteur: str, categorie: str, description: str) -> tuple[str, dict] | tuple[None, None]:
@@ -479,7 +504,7 @@ with tabs[0]:
         sc     = compute_score(uc, st.session_state.weights)
         quad   = get_quadrant(uc["impact"], uc["faisabilite"])
         badge_cls, badge_lbl, _ = QUAD_META[quad]
-        col_exp, col_ai, col_del = st.columns([10, 2, 1])
+        col_exp, col_ai, col_check, col_del = st.columns([10, 2, 2, 1])
 
         with col_exp:
             with st.expander(f"**{uc['nom']}** — {sc}/10  |  {badge_lbl}  |  {uc['categorie']}", expanded=False):
@@ -502,7 +527,7 @@ with tabs[0]:
                 d1,d2,d3,d4,d5 = st.columns(5)
                 new_imp = d1.slider("Impact",     1,10,uc["impact"],      key=f"imp_{idx}")
                 new_fai = d2.slider("Faisabilité",1,10,uc["faisabilite"], key=f"fai_{idx}")
-                new_del = d3.slider("Délai",      1,10,uc["delai_valeur"],key=f"del_{idx}")
+                new_del = d3.slider("Délai",      1,10,uc["delai_valeur"],key=f"delai_{idx}")
                 new_ali = d4.slider("Alignement", 1,10,uc["alignement"],  key=f"ali_{idx}")
                 new_ris = d5.slider("Risque",     1,10,uc["risque"],       key=f"ris_{idx}")
                 new_desc = st.text_area("Description", value=uc["description"], key=f"desc_{idx}", height=60)
@@ -524,6 +549,18 @@ with tabs[0]:
                         })
                         st.session_state.autoscore_cache[uc["nom"]] = result
                         st.rerun()
+
+        with col_check:
+            if api_key:
+                if st.button("🔁 Cohérence", key=f"check_{idx}", help="Vérifier que 2 exécutions donnent le même score"):
+                    with st.spinner("Vérification…"):
+                        check = check_scoring_consistency(uc["nom"], uc["description"], uc["categorie"], api_key)
+                    if check["error"]:
+                        st.error(check["error"])
+                    elif check["consistent"]:
+                        st.success(f"✅ Score identique sur {len(check['runs'])} exécutions : {check['runs'][0]}")
+                    else:
+                        st.error(f"⚠️ Score instable d'une exécution à l'autre : {check['runs']}")
 
         with col_del:
             if st.button("🗑", key=f"del_{idx}", help="Supprimer"):
@@ -591,8 +628,9 @@ with tabs[1]:
     for (x,y,txt) in [(8.5,0.6,"FILL-IN"),(8.5,9.6,"QUICK WIN"),(0.6,0.6,"QUESTIONABLE"),(0.6,9.6,"STRATEGIC BET")]:
         fig_bubble.add_annotation(x=x,y=y,text=txt,showarrow=False,font=dict(size=9,color="rgba(255,255,255,0.2)"),xanchor="center")
 
+    bubble_layout = {k:v for k,v in CHART_DEFAULTS.items() if k not in ("xaxis","yaxis")}
     fig_bubble.update_layout(
-        **CHART_DEFAULTS,
+        **bubble_layout,
         title=("Portefeuille vs Benchmark " + secteur if show_bench else "Positionnement des cas d'usage") + " — taille = score composite",
         height=520,
         xaxis=dict(**CHART_DEFAULTS["xaxis"], title="Faisabilité Technique", range=[0,10.5]),
@@ -739,7 +777,8 @@ with tabs[3]:
     for pname, color in zip(profiles.keys(), sim_colors):
         fig_sim.add_trace(go.Bar(name=pname, x=df_sim.index, y=df_sim[pname], marker_color=color, opacity=0.85))
 
-    fig_sim.update_layout(**CHART_DEFAULTS, title="Score par profil de pondération", barmode="group", height=420,
+    sim_layout = {k:v for k,v in CHART_DEFAULTS.items() if k not in ("xaxis","yaxis")}
+    fig_sim.update_layout(**sim_layout, title="Score par profil de pondération", barmode="group", height=420,
         xaxis=dict(**CHART_DEFAULTS["xaxis"],tickangle=-30,tickfont=dict(size=10)),
         yaxis=dict(**CHART_DEFAULTS["yaxis"],title="Score /10",range=[0,10.5]))
     st.plotly_chart(fig_sim, use_container_width=True, key="sim_chart")
