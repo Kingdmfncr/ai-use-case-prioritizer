@@ -96,4 +96,10 @@ streamlit run app.py
 
 ---
 
+## Playbook
+
+Guide opératoire complet (Définitions/Process/Documentation/Templates) : [`PLAYBOOK.md`](PLAYBOOK.md).
+
+---
+
 *Construit avec l'IA — Gisèle Metouck | Data Analyst & IA Builder*
